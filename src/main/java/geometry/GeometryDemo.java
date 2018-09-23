@@ -6,6 +6,7 @@ import geometry.helpers.AppPropertiesReader;
 
 import java.io.IOException;
 import java.lang.*;
+import java.util.Map;
 import java.util.Properties;
 
 public class GeometryDemo {
@@ -25,5 +26,11 @@ public class GeometryDemo {
                                                                   Integer.parseInt( appProperties.getProperty( PROPS_EDGE_SIDE )),
                                                                   Integer.parseInt( appProperties.getProperty( PROPS_ANGLE )));
         System.out.println( "Area of parallelogram based on app.properties: " + parallelogramOnAppProps.calculateArea() );
+
+        Map<String, String> propertiesFromFile = AppPropertiesReader.getPropsFromFile();
+        Parallelogram parallelogramOnPropsFromFile = new Parallelogram(Integer.parseInt( propertiesFromFile.get( PROPS_BASE_SIDE )),
+                                                                       Integer.parseInt( propertiesFromFile.get( PROPS_EDGE_SIDE )),
+                                                                       Integer.parseInt( propertiesFromFile.get( PROPS_ANGLE )));
+        System.out.println( "Area of parallelogram based on properties from file: " + parallelogramOnPropsFromFile.calculateArea() );
     }
 }
