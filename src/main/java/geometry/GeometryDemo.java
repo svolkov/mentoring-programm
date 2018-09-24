@@ -16,7 +16,7 @@ public class GeometryDemo {
         final String PROPS_EDGE_SIDE = "edgeSide";
         final String PROPS_ANGLE = "angle";
 
-        Parallelogram parallelogram1 = new Parallelogram( 2, 8, 80 );
+        Parallelogram parallelogram1 = new Parallelogram( 2, 8, 90 );
         System.out.println( "Area of parallelogram: " + parallelogram1.calculateArea() );
         Square square = new Square( 50 );
         System.out.println( "Area of square: " + square.calculateArea() );

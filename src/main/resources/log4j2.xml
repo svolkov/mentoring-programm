@@ -5,13 +5,14 @@
             <PatternLayout pattern="%d{HH:mm:ss.SSS} Thread [%t] #%T %-5level %logger{36} - %msg%n"/>
         </Console>
         <File name="ErrorLogFile" fileName="error.log">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout>
               <Pattern>%d{HH:mm:ss.SSS} Thread [%t] #%T %-5level %logger{36} - %msg%n</Pattern>
             </PatternLayout>
         </File>
     </Appenders>
     <Loggers>
-        <Logger name="geometry" level="ERROR" additivity="true">
+        <Logger name="geometry" level="INFO" additivity="true">
             <AppenderRef ref="ErrorLogFile"/>
         </Logger>
         <Root level="INFO">
