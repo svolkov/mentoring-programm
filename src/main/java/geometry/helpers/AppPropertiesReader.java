@@ -25,7 +25,7 @@ public class AppPropertiesReader {
         try {
             props.load( is );
         }finally {
-            logger.error( "Error has happened while getting properties from " + PROPS_FILE);
+           // logger.error( "Error has happened while getting properties from " + PROPS_FILE);
             if (is != null){
                 is.close();
             }
@@ -48,7 +48,7 @@ public class AppPropertiesReader {
                 properties.put( lineParts[0], lineParts[1] );
             }
         }finally {
-            logger.error( "Error has happened while reading properties from file " + CONFIG_FILE);
+          //  logger.error( "Error has happened while reading properties from file " + CONFIG_FILE);
             if(bufferedReader != null) {
                 bufferedReader.close();
             }
