@@ -26,9 +26,9 @@ public class AppPropertiesReader {
         }
         try {
             props.load(is);
-        } catch (IOException e) {
+        } catch (IOException ex) {
             logger.error("Error has happened while getting properties from " + PROPS_FILE);
-            throw new IOException();
+            throw ex;
         } finally {
             if (is != null) {
                 try {
@@ -55,7 +55,7 @@ public class AppPropertiesReader {
             }
         } catch (IOException ex) {
             logger.error("Error has happened while getting properties from " + PROPS_FILE);
-            throw new IOException();
+            throw ex;
         }
         if (properties.size() < PROPS_NUMBER) {
             logger.error("Error: wrong content of the file " + PROPS_FILE);
