@@ -10,12 +10,12 @@ public class Parallelogram {
     private int angle;
 
     public Parallelogram( int baseSide, int edgeSide, int angle ){
-        if( angle <= 0 || angle >= 180 ){
+        if ( angle <= 0 || angle >= 180 ){
             logger.error("Wrong input data.");
             throw new IllegalArgumentException( "Wrong input data for parallelogram: the angle must be > 0 and < 180 degrees." );
         }
         this.angle = angle;
-        if( baseSide <= 0 || edgeSide <= 0 ){
+        if ( baseSide <= 0 || edgeSide <= 0 ){
             logger.error("Wrong input data.");
             throw new IllegalArgumentException( "Wrong input data for parallelogram: the side must be > 0." );
         }

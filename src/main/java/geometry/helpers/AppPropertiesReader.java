@@ -2,7 +2,6 @@ package geometry.helpers;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +27,7 @@ public class AppPropertiesReader {
             props.load(is);
         } catch (IOException ex) {
             logger.error("Error has happened while getting properties from " + PROPS_FILE);
+            logger.error(ex.getMessage());
             throw ex;
         } finally {
             if (is != null) {

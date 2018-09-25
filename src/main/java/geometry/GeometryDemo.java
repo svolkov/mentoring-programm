@@ -3,7 +3,6 @@ package geometry;
 import geometry.figures.Parallelogram;
 import geometry.figures.Square;
 import geometry.helpers.AppPropertiesReader;
-
 import java.io.IOException;
 import java.lang.*;
 import java.util.Map;
