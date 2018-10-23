@@ -7,12 +7,14 @@ import geometry.helpers.Deserializer;
 
 import java.io.IOException;
 import java.lang.*;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 public class GeometryDemo {
     final static String PARALLELOGRAM_JSON_FILEPATH = GeometryDemo.class.getResource( "/deserialization/parallelogram.txt" ).getPath();
     final static String SQUARE_JSON_FILEPATH = GeometryDemo.class.getResource( "/deserialization/square.txt" ).getPath();
+    final static String JSON_ARRAY_FILEPATH = GeometryDemo.class.getResource( "/deserialization/parallelogram_array.txt" ).getPath();
 
     public static void main(String[] args) throws IOException {
         final String PROPS_BASE_SIDE = "baseSide";
@@ -41,5 +43,8 @@ public class GeometryDemo {
         System.out.println( "Area of parallelogram based on Json from file: " + parallelogramFromJson.calculateArea() );
         Square squareFromJson = Deserializer.getObjectFromJsonFile( SQUARE_JSON_FILEPATH, Square.class );
         System.out.println( "Area of square based on Json from file: " + squareFromJson.calculateArea() );
+
+        List<Parallelogram> listOfParallelograms = Deserializer.getParallelogramsFromJsonFile( JSON_ARRAY_FILEPATH );
+        listOfParallelograms.forEach( parallelogram -> System.out.println( "Area of parallelogram from Json-array: " + parallelogram.calculateArea() ) );
     }
 }
