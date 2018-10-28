@@ -16,7 +16,9 @@ public class GeometryDemo {
     final static String PARALLELOGRAM_JSON_FILEPATH = GeometryDemo.class.getResource( "/deserialization/parallelogram.txt" ).getPath();
     final static String SQUARE_JSON_FILEPATH = GeometryDemo.class.getResource( "/deserialization/square.txt" ).getPath();
     final static String JSON_ARRAY_FILEPATH = GeometryDemo.class.getResource( "/deserialization/parallelogram_array.txt" ).getPath();
+    final static String EXCEL_ARRAY_FILEPATH = GeometryDemo.class.getResource( "/deserialization/Parallelograms.xlsx" ).getPath();
     final static String AREAS_FILENAME = "areas.json";
+    final static String AREAS_EXCEL_FILENAME = "areas.xlsx";
 
     public static void main(String[] args) throws IOException {
         final String PROPS_BASE_SIDE = "baseSide";
@@ -49,5 +51,10 @@ public class GeometryDemo {
         List<Parallelogram> listOfParallelograms = FileWorker.getParallelogramsFromJsonFile( JSON_ARRAY_FILEPATH );
         List<Integer> areas = listOfParallelograms.stream().map( Parallelogram::calculateArea ).collect( Collectors.toList() );
         FileWorker.saveObjectsToJsonFile( AREAS_FILENAME, areas );
+
+        List<Parallelogram> listOfParallelogramsFormExcel = FileWorker.getParallelogramsFromExcelFile(EXCEL_ARRAY_FILEPATH);
+        List<Integer> areasOfParallelogramsFormExcel = listOfParallelogramsFormExcel.stream().map( Parallelogram::calculateArea )
+                                                                                    .collect( Collectors.toList() );
+        FileWorker.saveParallelogramAreasToExcelFile(AREAS_EXCEL_FILENAME, areasOfParallelogramsFormExcel);
     }
 }
