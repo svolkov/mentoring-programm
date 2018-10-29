@@ -21,6 +21,8 @@ public class GeometryDemo {
                                 .getResource("/deserialization/parallelogram_array.json" ).getPath();
     private final static String EXCEL_ARRAY_FILEPATH = GeometryDemo.class
                                 .getResource( "/deserialization/Parallelograms.xlsx" ).getPath();
+    private final static String XML_ARRAY_FILEPATH = GeometryDemo.class
+                                .getResource( "/deserialization/figures.xml" ).getPath();
     private final static String AREAS_FILENAME = "areas.json";
     private final static String AREAS_EXCEL_FILENAME = "areas.xlsx";
 
