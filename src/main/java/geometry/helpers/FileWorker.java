@@ -9,7 +9,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
@@ -130,5 +135,27 @@ public class FileWorker {
             logger.error( "Error has happened while writing to file: " + filePath );
             throw ex;
         }
+    }
+
+    public static List<Parallelogram> getParallelogramsFromXmlFile( String filePath )
+                            throws IOException, ParserConfigurationException, SAXException {
+        logger.info( "Parallelograms deserialization from xml-file: " + filePath );
+        List<Parallelogram> listOfElements = new ArrayList<>();
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+
+
+        try(FileInputStream fileInputStream = new FileInputStream(filePath)){
+            Document dom = docBuilder.parse(fileInputStream);
+
+        }catch(IOException ex){
+            logger.error( "Error has happened while reading from file: " + filePath );
+            throw ex;
+        }
+        if ( listOfElements.size() == 0 ) {
+            logger.error( "Error: wrong content of the file " + filePath );
+            throw new IllegalArgumentException();
+        }
+        return listOfElements;
     }
 }
