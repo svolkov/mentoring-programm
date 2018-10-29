@@ -13,12 +13,16 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 public class GeometryDemo {
-    final static String PARALLELOGRAM_JSON_FILEPATH = GeometryDemo.class.getResource( "/deserialization/parallelogram.txt" ).getPath();
-    final static String SQUARE_JSON_FILEPATH = GeometryDemo.class.getResource( "/deserialization/square.txt" ).getPath();
-    final static String JSON_ARRAY_FILEPATH = GeometryDemo.class.getResource( "/deserialization/parallelogram_array.txt" ).getPath();
-    final static String EXCEL_ARRAY_FILEPATH = GeometryDemo.class.getResource( "/deserialization/Parallelograms.xlsx" ).getPath();
-    final static String AREAS_FILENAME = "areas.json";
-    final static String AREAS_EXCEL_FILENAME = "areas.xlsx";
+    private final static String PARALLELOGRAM_JSON_FILEPATH = GeometryDemo.class
+                                .getResource("/deserialization/parallelogram.json" ).getPath();
+    private final static String SQUARE_JSON_FILEPATH = GeometryDemo.class
+                                .getResource( "/deserialization/square.txt" ).getPath();
+    private final static String JSON_ARRAY_FILEPATH = GeometryDemo.class
+                                .getResource("/deserialization/parallelogram_array.json" ).getPath();
+    private final static String EXCEL_ARRAY_FILEPATH = GeometryDemo.class
+                                .getResource( "/deserialization/Parallelograms.xlsx" ).getPath();
+    private final static String AREAS_FILENAME = "areas.json";
+    private final static String AREAS_EXCEL_FILENAME = "areas.xlsx";
 
     public static void main(String[] args) throws IOException {
         final String PROPS_BASE_SIDE = "baseSide";
