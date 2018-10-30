@@ -2,6 +2,7 @@ package geometry.helpers;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import geometry.figures.Parallelogram;
+import geometry.figures.Square;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -10,6 +11,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -140,22 +144,66 @@ public class FileWorker {
     public static List<Parallelogram> getParallelogramsFromXmlFile( String filePath )
                             throws IOException, ParserConfigurationException, SAXException {
         logger.info( "Parallelograms deserialization from xml-file: " + filePath );
-        List<Parallelogram> listOfElements = new ArrayList<>();
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-
-
+        List<Parallelogram> parallelogramList = new ArrayList<>();
         try(FileInputStream fileInputStream = new FileInputStream(filePath)){
-            Document dom = docBuilder.parse(fileInputStream);
-
-        }catch(IOException ex){
-            logger.error( "Error has happened while reading from file: " + filePath );
+                getObjectsFromXml(fileInputStream, parallelogramList);
+        }catch ( IOException ex ){
+            logger.error( "Error has happened while writing to file: " + filePath );
             throw ex;
         }
-        if ( listOfElements.size() == 0 ) {
+        if ( parallelogramList.size() == 0 ) {
             logger.error( "Error: wrong content of the file " + filePath );
             throw new IllegalArgumentException();
         }
-        return listOfElements;
+        return parallelogramList;
+    }
+
+    private static void getObjectsFromXml(FileInputStream fileInputStream, List<Parallelogram> listOfFigures)
+            throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(fileInputStream);
+        NodeList nodeList = doc.getElementsByTagName( "figure" );
+        for( int i = 0; i < nodeList.getLength(); i++){
+            Node node = nodeList.item( i );
+            Element elementFigure = (Element) node;
+            String figureType = elementFigure.getAttribute( "type" );
+            if(!figureType.equals( "" )){
+                listOfFigures.add( makeFigureObject(figureType, elementFigure) );
+            }else{
+                logger.error( "XML document error: element 'figure' has no attribute " );
+                throw new SAXException();
+            }
+        }
+    }
+
+    private static Parallelogram makeFigureObject(String typeofFigure, Element element)
+            throws SAXException {
+        Parallelogram parallelogram;
+        switch(typeofFigure){
+              case "parallelogram": NodeList baseSideParams = element.getElementsByTagName( "baseSide" );
+                                    NodeList edgeSideParams = element.getElementsByTagName( "edgeSide" );
+                                    NodeList angleParams = element.getElementsByTagName( "angle" );
+                                    if(baseSideParams.getLength() == 1 && edgeSideParams.getLength() == 1 && angleParams.getLength() == 1) {
+                                           parallelogram = new Parallelogram( Integer.parseInt( baseSideParams.item( 0 ).getTextContent()),
+                                                                           Integer.parseInt( edgeSideParams.item( 0 ).getTextContent()),
+                                                                           Integer.parseInt( angleParams.item( 0 ).getTextContent()));
+                                    }else{
+                                        logger.error( "XML document error: element 'figure' of type 'parallelogram' has wrong parameters number." );
+                                        throw new SAXException();
+                                    }
+                                    break;
+              case "square":        NodeList sideParams = element.getElementsByTagName( "side" );
+                                    if(sideParams.getLength() == 1) {
+                                         parallelogram = new Square( Integer.parseInt( sideParams.item( 0 ).getTextContent()));
+                                    }else{
+                                        logger.error( "XML document error: element 'figure' of type 'square' has wrong parameters number." );
+                                        throw new SAXException();
+                                       }
+                    break;
+                                    default: logger.error( "XML document error: element 'figure' has wrong attribute " );
+              throw new SAXException();
+        }
+        return parallelogram;
     }
 }

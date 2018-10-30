@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <figures>
-    <figure>
-        <type>parallelogram</type>
+    <figure type = "parallelogram">
         <baseSide>2</baseSide>
         <edgeSide>8</edgeSide>
         <angle>90</angle>
     </figure>
-    <figure>
-        <type>parallelogram</type>
+    <figure type = "parallelogram">
         <baseSide>20</baseSide>
         <edgeSide>80</edgeSide>
         <angle>90</angle>
     </figure>
-    <figure>
-        <type>square</type>
+    <figure type = "square">
         <side>60</side>
     </figure>
 </figures>

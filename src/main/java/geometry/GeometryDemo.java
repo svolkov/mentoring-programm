@@ -4,7 +4,9 @@ import geometry.figures.Parallelogram;
 import geometry.figures.Square;
 import geometry.helpers.AppPropertiesReader;
 import geometry.helpers.FileWorker;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.lang.*;
 import java.util.List;
@@ -26,7 +28,8 @@ public class GeometryDemo {
     private final static String AREAS_FILENAME = "areas.json";
     private final static String AREAS_EXCEL_FILENAME = "areas.xlsx";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)
+            throws IOException, ParserConfigurationException, SAXException {
         final String PROPS_BASE_SIDE = "baseSide";
         final String PROPS_EDGE_SIDE = "edgeSide";
         final String PROPS_ANGLE = "angle";
@@ -62,5 +65,11 @@ public class GeometryDemo {
         List<Integer> areasOfParallelogramsFormExcel = listOfParallelogramsFormExcel.stream().map( Parallelogram::calculateArea )
                                                                                     .collect( Collectors.toList() );
         FileWorker.saveParallelogramAreasToExcelFile(AREAS_EXCEL_FILENAME, areasOfParallelogramsFormExcel);
+
+        List<Parallelogram> listOfParallelogramsFormXml = FileWorker.getParallelogramsFromXmlFile(XML_ARRAY_FILEPATH);
+        List<Integer> areasOfParallelogramsFormXml = listOfParallelogramsFormXml.stream().map( Parallelogram::calculateArea )
+                                                                                .collect( Collectors.toList() );
+        System.out.println( "Areas of parallelograms from xml-file: ");
+        areasOfParallelogramsFormXml.forEach( System.out::println );
     }
 }
