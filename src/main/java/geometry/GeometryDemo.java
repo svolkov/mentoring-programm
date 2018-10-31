@@ -77,5 +77,7 @@ public class GeometryDemo {
         System.out.println( "Areas of parallelograms from xml-file: ");
         areasOfParallelogramsFormXml.forEach( System.out::println );
         FileWorker.saveParallelogramAreasToXmlFile( AREAS_XML_FILENAME, areasOfParallelogramsFormXml );
+
+        List<Parallelogram> listOfParallelogramsFormZipXml = FileWorker.getParallelogramsFromZippedXmlFile(ZIP_ARRAY_FILEPATH);
     }
 }

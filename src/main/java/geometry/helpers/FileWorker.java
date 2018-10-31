@@ -33,6 +33,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 
 public class FileWorker {
@@ -188,19 +190,37 @@ public class FileWorker {
     public static List<Parallelogram> getParallelogramsFromZippedXmlFile( String filePath )
             throws IOException, ParserConfigurationException, SAXException {
         logger.info( " Unzip file: " + filePath );
-        //List<Parallelogram> parallelogramList = new ArrayList<>();
 
-        try(FileInputStream fileInputStream = new FileInputStream(filePath)){
-            //getObjectsFromXml(fileInputStream, parallelogramList);
+        byte[] buffer = new byte[1024];
+        String unzippedFilePath = null;
+        FileOutputStream fileOutputStream =null;
+
+        try(FileInputStream fileInputStream = new FileInputStream(filePath);
+            ZipInputStream zipInputStream = new ZipInputStream(fileInputStream)
+            ){
+            ZipEntry zipEntry = zipInputStream.getNextEntry();
+            while(zipEntry != null){
+                unzippedFilePath = zipEntry.getName();
+                fileOutputStream = new FileOutputStream(unzippedFilePath);
+                int currentBufferLength;
+                while((currentBufferLength = zipInputStream.read(buffer)) > 0){
+                   fileOutputStream.write(buffer, 0, currentBufferLength);
+                }
+                zipEntry = zipInputStream.getNextEntry();
+            }
         }catch ( IOException ex ){
             logger.error( "Error has happened while writing to file: " + filePath );
             throw ex;
+        }finally {
+            if(fileOutputStream != null){
+                fileOutputStream.close();
+            }
         }
 //        if ( parallelogramList.size() == 0 ) {
 //            logger.error( "Error: wrong content of the file " + filePath );
 //            throw new IllegalArgumentException();
 //        }
-        return new ArrayList<>();
+        return getParallelogramsFromXmlFile(unzippedFilePath);
     }
 
     private static void getObjectsFromXml(FileInputStream fileInputStream, List<Parallelogram> listOfFigures)
