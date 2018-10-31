@@ -26,9 +26,12 @@ public class GeometryDemo {
                                 .getResource( "/deserialization/Parallelograms.xlsx" ).getPath();
     private final static String XML_ARRAY_FILEPATH = GeometryDemo.class
                                 .getResource( "/deserialization/figures.xml" ).getPath();
+    private final static String ZIP_ARRAY_FILEPATH = GeometryDemo.class
+            .getResource( "/deserialization/figuresXML.zip" ).getPath();
     private final static String AREAS_FILENAME = "areas.json";
     private final static String AREAS_EXCEL_FILENAME = "areas.xlsx";
     private final static String AREAS_XML_FILENAME = "areas.xml";
+
 
     public static void main(String[] args)
             throws IOException, ParserConfigurationException, SAXException, TransformerException {

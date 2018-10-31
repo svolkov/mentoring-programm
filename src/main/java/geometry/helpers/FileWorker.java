@@ -185,6 +185,24 @@ public class FileWorker {
         }
     }
 
+    public static List<Parallelogram> getParallelogramsFromZippedXmlFile( String filePath )
+            throws IOException, ParserConfigurationException, SAXException {
+        logger.info( " Unzip file: " + filePath );
+        //List<Parallelogram> parallelogramList = new ArrayList<>();
+
+        try(FileInputStream fileInputStream = new FileInputStream(filePath)){
+            //getObjectsFromXml(fileInputStream, parallelogramList);
+        }catch ( IOException ex ){
+            logger.error( "Error has happened while writing to file: " + filePath );
+            throw ex;
+        }
+//        if ( parallelogramList.size() == 0 ) {
+//            logger.error( "Error: wrong content of the file " + filePath );
+//            throw new IllegalArgumentException();
+//        }
+        return new ArrayList<>();
+    }
+
     private static void getObjectsFromXml(FileInputStream fileInputStream, List<Parallelogram> listOfFigures)
             throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
