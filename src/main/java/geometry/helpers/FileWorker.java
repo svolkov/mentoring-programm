@@ -19,6 +19,12 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
@@ -27,7 +33,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Spliterator;
+
 
 public class FileWorker {
     static final Logger logger = LogManager.getLogger( FileWorker.class.getName() );
@@ -158,6 +164,27 @@ public class FileWorker {
         return parallelogramList;
     }
 
+    public static void saveParallelogramAreasToXmlFile(String filePath, List<Integer> areas)
+            throws IOException, ParserConfigurationException, TransformerException {
+        logger.info( "Saving parallelograms to XML-file: " + filePath );
+        Document document = createAreasXmlDoc(areas);
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer();
+        DOMSource source = new DOMSource( document );
+
+        Path path = Paths.get(filePath);
+        if(!Files.exists( path )){
+            Files.createFile( path );
+        }
+        try( FileOutputStream fileOutputStream = new FileOutputStream(filePath, false) ){
+            StreamResult result = new StreamResult( fileOutputStream );
+            transformer.transform( source, result );
+        }catch ( IOException ex ){
+            logger.error( "Error has happened while writing to file: " + filePath );
+            throw ex;
+        }
+    }
+
     private static void getObjectsFromXml(FileInputStream fileInputStream, List<Parallelogram> listOfFigures)
             throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -205,5 +232,24 @@ public class FileWorker {
               throw new SAXException();
         }
         return parallelogram;
+    }
+
+    private static Document createAreasXmlDoc(List<Integer> figureAreas)
+            throws ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = factory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+        Element areasElement = doc.createElement( "areas" );
+        doc.appendChild( areasElement );
+        int i = 1;
+        for(Integer area : figureAreas){
+            Element areaElement = doc.createElement( "area" );
+            Element valueElement = doc.createElement( "value" );
+            areasElement.appendChild( areaElement );
+            areaElement.appendChild( valueElement );
+            areaElement.setAttribute( "id", String.valueOf( i++ ) );
+            valueElement.appendChild( doc.createTextNode( area.toString() ) );
+        }
+        return doc;
     }
 }

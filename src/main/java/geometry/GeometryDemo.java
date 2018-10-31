@@ -7,6 +7,7 @@ import geometry.helpers.FileWorker;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.lang.*;
 import java.util.List;
@@ -27,9 +28,10 @@ public class GeometryDemo {
                                 .getResource( "/deserialization/figures.xml" ).getPath();
     private final static String AREAS_FILENAME = "areas.json";
     private final static String AREAS_EXCEL_FILENAME = "areas.xlsx";
+    private final static String AREAS_XML_FILENAME = "areas.xml";
 
     public static void main(String[] args)
-            throws IOException, ParserConfigurationException, SAXException {
+            throws IOException, ParserConfigurationException, SAXException, TransformerException {
         final String PROPS_BASE_SIDE = "baseSide";
         final String PROPS_EDGE_SIDE = "edgeSide";
         final String PROPS_ANGLE = "angle";
@@ -71,5 +73,6 @@ public class GeometryDemo {
                                                                                 .collect( Collectors.toList() );
         System.out.println( "Areas of parallelograms from xml-file: ");
         areasOfParallelogramsFormXml.forEach( System.out::println );
+        FileWorker.saveParallelogramAreasToXmlFile( AREAS_XML_FILENAME, areasOfParallelogramsFormXml );
     }
 }
