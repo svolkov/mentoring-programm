@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 
 public class FileWorker {
@@ -190,7 +191,6 @@ public class FileWorker {
     public static List<Parallelogram> getParallelogramsFromZippedXmlFile( String filePath )
             throws IOException, ParserConfigurationException, SAXException {
         logger.info( " Unzip file: " + filePath );
-
         byte[] buffer = new byte[1024];
         String unzippedFilePath = null;
         FileOutputStream fileOutputStream =null;
@@ -216,11 +216,33 @@ public class FileWorker {
                 fileOutputStream.close();
             }
         }
-//        if ( parallelogramList.size() == 0 ) {
-//            logger.error( "Error: wrong content of the file " + filePath );
-//            throw new IllegalArgumentException();
-//        }
-        return getParallelogramsFromXmlFile(unzippedFilePath);
+        List<Parallelogram> result = getParallelogramsFromXmlFile(unzippedFilePath);
+        Files.delete(Paths.get( unzippedFilePath) );
+        return result;
+    }
+
+    public static void saveParallelogramAreasToZippedXmlFile(String zipFilePath, List<Integer> areas)
+            throws IOException, ParserConfigurationException, TransformerException {
+        String xmlFilePath = zipFilePath.replaceAll( "zip", "xml" );
+        saveParallelogramAreasToXmlFile(xmlFilePath, areas);
+        byte[] buffer = new byte[1024];
+
+        logger.info( "Creating zipped XML-file: " + zipFilePath );
+        try( FileOutputStream fileOutputStream = new FileOutputStream(zipFilePath, false);
+             ZipOutputStream zipOutputStream = new ZipOutputStream( fileOutputStream );
+             FileInputStream fileInputStream = new FileInputStream( xmlFilePath )
+        ){
+            ZipEntry zipEntry = new ZipEntry( xmlFilePath );
+            zipOutputStream.putNextEntry( zipEntry );
+            int currentBufferLength;
+            while((currentBufferLength = fileInputStream.read( buffer )) > 0){
+                zipOutputStream.write( buffer, 0, currentBufferLength );
+            }
+        }catch ( IOException ex ){
+            logger.error( "Error has happened while creating Zip-file from: " + xmlFilePath );
+            throw ex;
+        }
+        Files.delete(Paths.get( xmlFilePath) );
     }
 
     private static void getObjectsFromXml(FileInputStream fileInputStream, List<Parallelogram> listOfFigures)

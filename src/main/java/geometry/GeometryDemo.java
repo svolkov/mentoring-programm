@@ -31,7 +31,7 @@ public class GeometryDemo {
     private final static String AREAS_FILENAME = "areas.json";
     private final static String AREAS_EXCEL_FILENAME = "areas.xlsx";
     private final static String AREAS_XML_FILENAME = "areas.xml";
-
+    private final static String AREAS_FOR_ZIP_FILENAME = "figure_areas.zip";
 
     public static void main(String[] args)
             throws IOException, ParserConfigurationException, SAXException, TransformerException {
@@ -79,5 +79,8 @@ public class GeometryDemo {
         FileWorker.saveParallelogramAreasToXmlFile( AREAS_XML_FILENAME, areasOfParallelogramsFormXml );
 
         List<Parallelogram> listOfParallelogramsFormZipXml = FileWorker.getParallelogramsFromZippedXmlFile(ZIP_ARRAY_FILEPATH);
+        List<Integer> areasOfParallelogramsFormZippedXml = listOfParallelogramsFormZipXml.stream().map( Parallelogram::calculateArea )
+                                                                                .collect( Collectors.toList() );
+        FileWorker.saveParallelogramAreasToZippedXmlFile( AREAS_FOR_ZIP_FILENAME, areasOfParallelogramsFormZippedXml );
     }
 }
